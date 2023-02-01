@@ -27,7 +27,6 @@ export default function TaskList() {
     //check last item:
     const lastItemTaskList = taskList.length - 1;
     const isLastTaskEmpty = taskList[lastItemTaskList].content === "";
-    console.log(isLastTaskEmpty);
 
     if (!isLastTaskEmpty) {
       const newTask = {
@@ -36,48 +35,46 @@ export default function TaskList() {
         date: new Date(),
         key: uuid.v4(),
       };
-      console.log([...taskList, newTask]);
       setTaskList([...taskList, newTask]);
     }
   };
 
   const updateTask = (taskContent, key) => {
-    console.log(taskContent, key);
-    //const index = taskList.findIndex(task => task.key === key);
     let updatedTaskList = [...taskList];
     updatedTaskList[key] = {
       ...updatedTaskList[key],
       content: taskContent,
     };
     setTaskList(updatedTaskList);
+    console.log(taskList)
     addTask();
+    //deleteTask();
+    
+
   };
 
   const deleteTask = () => {
+    console.log(taskList.length)
+    console.log(taskList)
+
     if (taskList.length > 1) {
-      const taskListWithoutLastTask = [...taskList];
-      taskListWithoutLastTask.pop;
-      const indexToDelete = taskListWithoutLastTask.findIndex(
-        (task) => task === ""
+      
+      const indexToDelete = taskList.findIndex(
+        (task, index) => task.content === "" && index !== taskList.length - 1
       );
-      if (indexToDelete > -1) {
+      console.log(indexToDelete)
+     if (indexToDelete > -1) {
         const updatedTaskList = taskList.splice(indexToDelete, 1);
         const newTask = {
-            content: "",
-            radioType: "checkmark",
-            date: new Date(),
-            key: uuid.v4(),
-          };
+          content: "",
+          radioType: "checkmark",
+          date: new Date(),
+          key: uuid.v4(),
+        };
         setTaskList([...updatedTaskList, newTask]);
       }
     }
   };
-
-  /*useEffect(() => {
-      addTask();
-  }, [taskList]);*/
-
-  
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
