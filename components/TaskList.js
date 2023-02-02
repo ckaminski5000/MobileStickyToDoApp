@@ -46,35 +46,28 @@ export default function TaskList() {
       content: taskContent,
     };
     setTaskList(updatedTaskList);
-    console.log(taskList)
-    addTask();
-    //deleteTask();
-    
 
+    //deleteTask();
   };
 
   const deleteTask = () => {
-    console.log(taskList.length)
-    console.log(taskList)
-
     if (taskList.length > 1) {
-      
       const indexToDelete = taskList.findIndex(
         (task, index) => task.content === "" && index !== taskList.length - 1
       );
-      console.log(indexToDelete)
-     if (indexToDelete > -1) {
-        const updatedTaskList = taskList.splice(indexToDelete, 1);
-        const newTask = {
-          content: "",
-          radioType: "checkmark",
-          date: new Date(),
-          key: uuid.v4(),
-        };
-        setTaskList([...updatedTaskList, newTask]);
+      console.log(indexToDelete);
+      if (indexToDelete > -1) {
+        let updatedTaskList = [...taskList];
+        updatedTaskList.splice(indexToDelete, 1);
+        setTaskList([...updatedTaskList]);
       }
     }
   };
+
+  useEffect(() => {
+    addTask();
+    deleteTask();
+  }, [taskList]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
