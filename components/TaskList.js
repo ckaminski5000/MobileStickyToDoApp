@@ -17,9 +17,9 @@ export default function TaskList() {
       radioType: "checkmark",
       date: new Date(),
       key: uuid.v4(),
+      checked: false,
     },
   ]);
-  const [test, setTest] = useState("");
 
   const addTask = () => {
     //only add Task if last item is not empty
@@ -34,6 +34,7 @@ export default function TaskList() {
         radioType: "checkmark",
         date: new Date(),
         key: uuid.v4(),
+        checked: false,
       };
       setTaskList([...taskList, newTask]);
     }
@@ -55,13 +56,22 @@ export default function TaskList() {
       const indexToDelete = taskList.findIndex(
         (task, index) => task.content === "" && index !== taskList.length - 1
       );
-      console.log(indexToDelete);
       if (indexToDelete > -1) {
         let updatedTaskList = [...taskList];
         updatedTaskList.splice(indexToDelete, 1);
         setTaskList([...updatedTaskList]);
       }
     }
+  };
+
+  const addCheckMark = (index) => {
+    const updatedTaskList = [...taskList];
+    const isTaskChecked = updatedTaskList[index].checked;
+    updatedTaskList[index] = {
+      ...updatedTaskList[index],
+      checked: !isTaskChecked,
+    };
+    setTaskList(updatedTaskList);
   };
 
   useEffect(() => {
@@ -72,19 +82,22 @@ export default function TaskList() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.taskContainer}>
-        <FlatList
-          data={taskList}
-          keyboardShouldPersistTaps="always"
-          renderItem={({ task, index }) => (
+        {taskList.map((task, index) => {
+          return (
             <AddTaskComponent
               onChangeText={(taskContent) => updateTask(taskContent, index)}
               value={task?.content}
               icon="plus"
               size={24}
               color="#00000"
+              addCheckMark={addCheckMark}
+              index={index}
+              check={task?.checked}
+              key={task?.key}
+              taskContent={task?.content}
             />
-          )}
-        />
+          );
+        })}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -93,5 +106,7 @@ export default function TaskList() {
 const styles = StyleSheet.create({
   taskContainer: {
     position: "absolute",
+    width: "100%"
   },
 });
+

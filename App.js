@@ -8,19 +8,20 @@ import AddTaskComponent from "./components/AddTaskComponent";
 import TaskList from "./components/TaskList";
 
 export default function App() {
-  const [input, setInput] = useState('');
-  
+  const [input, setInput] = useState("");
+
   return (
     <>
       <View style={styles.container}>
-
-      <TaskList />
-      
-     
+        <View style={styles.titleContainer}>
+          <Text>Title</Text>
+        </View>
+        <View style={styles.row}>
+          <TaskList />
+        </View>
 
         <StatusBar style="auto" />
       </View>
-      
     </>
   );
 }
@@ -30,8 +31,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "yellow",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 100,
-    width: "100%",    
+    justifyContent: "space-evenly",
+    padding: 20,
+    width: "100%",
+  },
+  row: {
+    flexDirection: "column",
+    flexWrap: "wrap",
+    alignItems: "center",
+    flex: 9,
+  },
+  titleContainer: {
+    paddingTop: 40,
+    flexDirection: "column",
+    flexWrap: "wrap",
+    alignItems: "center",
+    flex: 1,
   },
 });
